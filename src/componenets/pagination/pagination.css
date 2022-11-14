@@ -3,7 +3,6 @@
   color: white;
   width: 50%;
   margin: 0 auto;
-  /* border: 1px solid black; */
   justify-content: space-between;
   align-items: center;
   margin-top: 10px;
@@ -28,5 +27,4 @@
 .pagination div:nth-child(1):hover,
 .pagination div:nth-child(3):hover {
   font-weight: bold;
-  /* cursor: pointer; */
 }

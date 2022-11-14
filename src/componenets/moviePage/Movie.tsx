@@ -18,7 +18,7 @@ const Movie: React.FC = () => {
   useEffect(() => {
     const getMovieContent = async () => {
       try {
-        const { data } = await axios.get("http://www.omdbapi.com/", {
+        const { data } = await axios.get("https://www.omdbapi.com/", {
           params: {
             apikey: process.env.REACT_APP_API_KEY,
             i: location.pathname.split("/movie/")[1],

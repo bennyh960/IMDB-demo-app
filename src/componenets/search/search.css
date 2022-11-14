@@ -1,0 +1,22 @@
+#search-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid red;
+}
+
+#search-container form {
+  border: 1px solid red;
+  width: 33%;
+  margin: 0 auto;
+  margin: 12px auto 20px auto;
+}
+
+#search-container input {
+  padding: 8px 5px;
+  width: 100%;
+}
+
+#search-container input:focus {
+  outline-color: rgb(54, 54, 253);
+}

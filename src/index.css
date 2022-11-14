@@ -1,0 +1,26 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  /* font-size: 10px; */
+}
+
+:root {
+  --bg-primary: #303131;
+  --bg-secondary: #444646;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--bg-primary);
+}
+
+section {
+  width: 85%;
+  height: 100vh;
+  margin: 0 auto;
+}

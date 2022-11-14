@@ -11,6 +11,7 @@
 
 .pagination-num {
   width: 10%;
+  min-width: 50px;
   padding: 2px;
   text-align: center;
   background-color: white;

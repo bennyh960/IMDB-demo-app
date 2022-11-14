@@ -12,13 +12,13 @@ const Pagination: React.FC<Props> = ({ page, setPage, maxContent }) => {
     if (page > 1) setPage((p) => p - 1);
   };
   const handleRight = () => {
-    if (page <= maxContent) setPage((p) => p + 1);
+    if (page < maxContent) setPage((p) => p + 1);
   };
   return (
     <div className="pagination">
       <div onClick={handleLeft}>&#60;&#60; </div>
       <div className="pagination-num">
-        {page}/{maxContent + 1}
+        {page}/{maxContent}
       </div>
       <div onClick={handleRight}>&#62;&#62; </div>
     </div>

@@ -1,0 +1,67 @@
+.movie-container {
+  display: flex;
+  width: 80vw;
+  height: 90vh;
+  margin: 2.5% auto;
+  padding: 2px;
+  box-shadow: rgba(220, 220, 220, 0.1) 0px 13px 23px 20px;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.poster-big {
+  background-size: contain;
+  width: 50%;
+  height: 100%;
+}
+.poster-big img {
+  width: 100%;
+  height: 100%;
+  border-right: 1px solid grey;
+}
+
+.movie-description {
+  width: 50%;
+  padding: 0px 15px;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.movie-description h1,
+.movie-description h2 {
+  flex: 1;
+  margin: 10px auto;
+}
+
+.movie-description p {
+  flex: 2;
+  margin: 5px 0;
+  overflow-y: scroll;
+}
+
+.load-movie {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@media screen and (max-width: 650px) {
+  .movie-container {
+    width: 95vw;
+    height: 95vh;
+  }
+}
+@media screen and (max-width: 500px) {
+  .movie-container {
+    width: 95vw;
+    height: fit-content;
+    flex-direction: column;
+  }
+  .poster-big,
+  .movie-description {
+    width: 100%;
+  }
+}

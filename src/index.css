@@ -4,37 +4,8 @@
   padding: 0;
 }
 
-html {
-  /* font-size: 10px; */
-}
-
 :root {
   --bg-primary: #303131;
   --bg-secondary: #444646;
-}
-
-body {
-  width: 100vw;
-  /* height: 100vh; */
-  background-color: var(--bg-primary);
-}
-
-section {
-  width: 85%;
-  /* height: 100vh; */
-  margin: 0 auto;
-}
-
-::-webkit-scrollbar {
-  display: none;
-}
-
-@media screen and (max-width: 650px) {
-  body {
-    /* height: fit-content; */
-  }
-  section {
-    width: 95%;
-    height: fit-content;
-  }
+  --transition: 0.2s ease-in;
 }

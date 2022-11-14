@@ -3,7 +3,11 @@
   width: 33%;
   height: 4px;
   background-color: #b3e5fc;
-  margin: 10px auto;
+  margin: 0 auto;
+}
+
+.transparent {
+  background-color: transparent;
 }
 
 .determinate {

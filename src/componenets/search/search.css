@@ -2,21 +2,44 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid red;
+  /* border: 1px solid red; */
 }
 
 #search-container form {
-  border: 1px solid red;
-  width: 33%;
-  margin: 0 auto;
+  background-color: var(--bg-primary);
+  width: 100%;
   margin: 12px auto 20px auto;
+  display: flex;
+  justify-content: center;
 }
 
-#search-container input {
+#search-container form input {
   padding: 8px 5px;
-  width: 100%;
+  width: 33%;
+  margin: 0 auto;
 }
 
 #search-container input:focus {
   outline-color: rgb(54, 54, 253);
+}
+
+.pops-container {
+  color: white;
+  height: 2rem;
+  min-width: 100px;
+  text-align: center;
+}
+
+@media screen and (max-width: 650px) {
+  #search-container form {
+    position: fixed;
+    top: 0;
+    margin: 0 auto;
+    padding: 10px;
+  }
+  #search-container form input {
+    width: 70%;
+    margin: 0 auto;
+    padding: 10px 15;
+  }
 }

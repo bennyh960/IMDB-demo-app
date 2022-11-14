@@ -11,7 +11,7 @@ const Posters: React.FC<Props> = ({ movies }) => {
     return movies.map((movie) => (
       <div className="movie-card" key={movie.imdbID}>
         <img src={movie.Poster} alt={movie.Title} />
-        <h3>{movie.Title}</h3>
+        <h4>{movie.Title}</h4>
       </div>
     ));
   };

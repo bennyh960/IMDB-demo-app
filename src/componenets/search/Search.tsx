@@ -4,6 +4,7 @@ import axios from "axios";
 import Loader from "../loader/Loader";
 import Posters from "../posters/Posters";
 import { MovieType } from "../../types";
+import Pagination from "../pagination/Pagination";
 
 // TODO :
 // 1 use dotenv for apikey
@@ -17,6 +18,7 @@ const Search: React.FC = () => {
   const [submit, setSubmit] = useState<boolean>(false);
   const [movies, setMovies] = useState<MovieType[]>([]);
   const [page, setPage] = useState<number>(1);
+  const [maxContent, setMaxContent] = useState<number>(0);
 
   //   input handler
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -34,12 +36,14 @@ const Search: React.FC = () => {
         setLoading(() => true);
 
         const { data } = await axios.get("https://www.omdbapi.com/", {
-          params: { apikey: "57d5e741", s: searchValue, page },
+          //   params: { apikey: "57d5e741", s: searchValue, page },
+          params: { apikey: process.env.REACT_APP_API_KEY, s: searchValue, page },
         });
         setLoading(() => false);
         if (data.Response === "False") throw new Error("Movie Not Found.");
 
         setMovies(() => data.Search);
+        setMaxContent(() => Math.ceil(data.totalResults / 10));
         // console.log(data);
       } catch (error: any) {
         if (axios.isAxiosError(error)) {
@@ -57,16 +61,17 @@ const Search: React.FC = () => {
     };
 
     searchValue && getMovies();
-  }, [submit]);
+  }, [submit, page]);
 
   return (
     <section id="search-container">
       <form onSubmit={handleSubmit}>
         <input type="text" placeholder="Search..." value={searchValue} onChange={handleChange} />
       </form>
-      {isLoading && <Loader />}
-      {isError !== "" && <div style={{ color: "white" }}> {isError}</div>}
+      {isLoading ? <Loader /> : <div className="linear-activity transparent"></div>}
+      <div className="pops-container"> {isError || ""}</div>
       <Posters movies={movies} />
+      {maxContent > 0 && <Pagination page={page} setPage={setPage} maxContent={maxContent} />}
     </section>
   );
 };

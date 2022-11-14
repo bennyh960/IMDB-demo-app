@@ -1,0 +1,31 @@
+.pagination {
+  display: flex;
+  color: white;
+  width: 50%;
+  margin: 0 auto;
+  /* border: 1px solid black; */
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.pagination-num {
+  width: 10%;
+  padding: 2px;
+  text-align: center;
+  background-color: white;
+  color: black;
+  border-radius: 5px;
+  border: 1px solid black;
+}
+
+.pagination div:nth-child(1),
+.pagination div:nth-child(3) {
+  font-weight: lighter;
+  cursor: pointer;
+}
+.pagination div:nth-child(1):hover,
+.pagination div:nth-child(3):hover {
+  font-weight: bold;
+  /* cursor: pointer; */
+}

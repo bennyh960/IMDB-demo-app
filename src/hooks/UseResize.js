@@ -13,7 +13,7 @@ const UseResize = () => {
   return [width, height];
 };
 
-function updateSize(setSize: ([]) => void) {
+function updateSize(setSize) {
   setSize([window.innerWidth, window.innerHeight]);
 }
 

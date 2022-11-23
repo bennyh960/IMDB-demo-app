@@ -24,7 +24,6 @@ const Movie: React.FC = () => {
             i: location.pathname.split("/movie/")[1],
           },
         });
-        // console.log(data);
         setMovieData((p) => {
           return { imdbID: data.imdbID, Writer: data.Writer, Plot: data.Plot, Poster: data.Poster, Title: data.Title };
         });

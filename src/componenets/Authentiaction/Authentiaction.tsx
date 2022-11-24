@@ -48,13 +48,13 @@ const Authentiaction = ({
       setIsLoading(() => true);
       const { data }: { data: Users[] } = await axios.get("https://628e3408368687f3e712634b.mockapi.io/imdb-users");
 
-      const userValidation = data.find((u) => u.password === password);
+      const userValidation = data.find((u) => u.password === password && u.email === email);
       // ! Do not delete -  bcrypt bug
       // * This logic work find but there is a bug with bcrypt and react
       // const userValidation = await findAsync(data, async (u: any) => {
-      // const isMatch = await bcrypt.compare(password, u.password);
-      // if (isMatch) return u;
-      // return undefined;
+      //   const isMatch = await bcrypt.compare(password, u.password);
+      //   if (isMatch && u.email === email) return u;
+      //   return undefined;
       // });
 
       if (!userValidation) {

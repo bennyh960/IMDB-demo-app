@@ -7,7 +7,7 @@ import AuthContext from "../../context/AuthProvider";
 import { Users } from "../../context/AuthProvider";
 import PasswordStrengthBar from "react-password-strength-bar";
 import { findAsync, passwordStrength } from "../../utils";
-// eslint-disable-next-line
+// @ts-ignore
 import bcrypt from "bcryptjs";
 
 const Authentiaction = ({
@@ -44,7 +44,6 @@ const Authentiaction = ({
       const { data }: { data: Users[] } = await axios.get("https://628e3408368687f3e712634b.mockapi.io/imdb-users");
 
       const userValidation = await findAsync(data, async (u: any) => {
-        // eslint-disable-next-line
         const isMatch = await bcrypt.compare(password, u.password);
         if (isMatch) return u;
         return undefined;
@@ -56,7 +55,7 @@ const Authentiaction = ({
           setMessage(() => "");
         }, 1500);
       } else {
-        setAuthUser({ ...userValidation, password: "*****" });
+        setAuthUser({ ...userValidation });
         navigate("/");
       }
       setIsLoading(() => false);
@@ -76,9 +75,8 @@ const Authentiaction = ({
       setIsLoading(() => true);
       let { data }: { data: Users[] } = await axios.get("https://628e3408368687f3e712634b.mockapi.io/imdb-users");
       const isEmailExist: Users | undefined = data.find((u) => u.email === email);
-      if (isEmailExist) throw new Error("Email is already exists"); //todo add email validation
+      if (isEmailExist) throw new Error("Email is already exists");
       else {
-        // eslint-disable-next-line
         const hashedPassword = await bcrypt.hash(password, 8);
         const { data }: { data: Users } = await axios.post("https://628e3408368687f3e712634b.mockapi.io/imdb-users", {
           email,
@@ -86,13 +84,11 @@ const Authentiaction = ({
           userName,
         });
 
-        setAuthUser({ ...data, password: hashedPassword });
+        setAuthUser({ ...data });
         navigate("/");
       }
       setIsLoading(() => false);
     } catch (error: any) {
-      // console.log(error.message);
-
       setMessage(() => error.message);
       setTimeout(() => {
         setMessage(() => "");
@@ -105,7 +101,7 @@ const Authentiaction = ({
     e.preventDefault();
     authType === "login" && validateLogIn();
     authType === "sign" && validateNewUser();
-    console.log(isValidRegistration);
+    // console.log(isValidRegistration);
   };
 
   const handleChangeType = () => {

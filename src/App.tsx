@@ -4,12 +4,15 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Search from "./componenets/search/Search";
 import Movie from "./componenets/moviePage/Movie";
 import Authentiaction from "./componenets/Authentiaction/Authentiaction";
+import RequireAuth from "./componenets/RouteProtection/RequireAuth";
 
 const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Search />} />
+        <Route element={<RequireAuth />}>
+          <Route path="/" element={<Search />} />
+        </Route>
         <Route path="/movie/:id" element={<Movie />} />
         <Route
           path="/register/login"

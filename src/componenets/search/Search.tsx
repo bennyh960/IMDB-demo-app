@@ -7,7 +7,6 @@ import { MovieType } from "../../types";
 import Pagination from "../pagination/Pagination";
 import { ReactComponent as Glass } from "../../assets/glass.svg";
 import UseResize from "../../hooks/UseResize";
-import { useNavigate } from "react-router";
 // TODO :
 
 const Search: React.FC = () => {
@@ -25,13 +24,15 @@ const Search: React.FC = () => {
   const scrollRef: any = useRef<React.ClassAttributes<HTMLDivElement>>(null);
   const newSubmitRef = useRef<boolean>(false);
 
-  // !devtool for me
-  const navigate = useNavigate();
-  //   input handler
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setSearchValue(() => e.target.value);
-    if (searchValue === "login123") navigate("/register/login");
-    if (searchValue === "sign123") navigate("/register/sign");
+    // -----------------------------------------------------------------------------
+    // !devtool for me for auth
+    // import { useNavigate } from "react-router";
+    // const navigate = useNavigate();
+    // if (searchValue === "login123") navigate("/register/login");
+    // if (searchValue === "sign123") navigate("/register/sign");
+    // -----------------------------------------------------------------------------
   };
   const handleSubmit = (e?: React.FormEvent<HTMLFormElement>): void => {
     e?.preventDefault();

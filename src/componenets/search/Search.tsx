@@ -7,7 +7,6 @@ import { MovieType } from "../../types";
 import Pagination from "../pagination/Pagination";
 import { ReactComponent as Glass } from "../../assets/glass.svg";
 import UseResize from "../../hooks/UseResize";
-// TODO :
 
 const Search: React.FC = () => {
   // states

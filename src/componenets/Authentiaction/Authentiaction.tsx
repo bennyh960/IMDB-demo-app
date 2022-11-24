@@ -7,7 +7,6 @@ import AuthContext from "../../context/AuthProvider";
 import { Users } from "../../context/AuthProvider";
 import PasswordStrengthBar from "react-password-strength-bar";
 import { findAsync, passwordStrength } from "../../utils";
-// @ts-ignore
 import bcrypt from "bcryptjs";
 
 const Authentiaction = ({
@@ -101,7 +100,6 @@ const Authentiaction = ({
     e.preventDefault();
     authType === "login" && validateLogIn();
     authType === "sign" && validateNewUser();
-    // console.log(isValidRegistration);
   };
 
   const handleChangeType = () => {

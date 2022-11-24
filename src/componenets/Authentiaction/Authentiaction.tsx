@@ -6,16 +6,16 @@ import Spiner from "../sppiner/Spiner";
 import AuthContext from "../../context/AuthProvider";
 import { Users } from "../../context/AuthProvider";
 import PasswordStrengthBar from "react-password-strength-bar";
-import { passwordStrength } from "../../utils";
+// import { passwordStrength } from "../../utils";
 
 // ! ===================== Bug with bcrypt ==================================
 // TODO : Solve this bug and use this logic or find another encryption libary
 // ?The logic using bcrypt work fine but there is a bug with bcrypt and react
-// import { findAsync, passwordStrength } from "../../utils";
-// import bcrypt from "bcryptjs";
+import { findAsync, passwordStrength } from "../../utils";
+import bcrypt from "bcryptjs-react";
 // ! ===================== Bug with bcrypt ==================================
 
-const Authentiaction = ({
+function Authentiaction({
   authType,
   question,
   buttonText,
@@ -23,7 +23,7 @@ const Authentiaction = ({
   authType: string;
   question: string;
   buttonText: string;
-}) => {
+}) {
   const [userName, setUserNAme] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -42,21 +42,28 @@ const Authentiaction = ({
     }
   }, [password2, password, userName, email, authType]);
 
+  useEffect(() => {
+    const resPass = async () => {
+      const hash = await bcrypt.hash("gicvab-jobZu9-matred", 8);
+      console.log("gicvab-jobZu9-matred", hash);
+    };
+    resPass();
+  }, []);
+
   // * login validation
   const validateLogIn = async () => {
     try {
       setIsLoading(() => true);
       const { data }: { data: Users[] } = await axios.get("https://628e3408368687f3e712634b.mockapi.io/imdb-users");
 
-      const userValidation = data.find((u) => u.password === password && u.email === email);
+      // const userValidation = data.find((u) => u.password === password && u.email === email);
       // ! Do not delete -  bcrypt bug
       // * This logic work find but there is a bug with bcrypt and react
-      // const userValidation = await findAsync(data, async (u: any) => {
-      //   const isMatch = await bcrypt.compare(password, u.password);
-      //   if (isMatch && u.email === email) return u;
-      //   return undefined;
-      // });
-
+      const userValidation = await findAsync(data, async (u: any) => {
+        const isMatch = await bcrypt.compare(password, u.password);
+        if (isMatch && u.email === email) return u;
+        return undefined;
+      });
       if (!userValidation) {
         setMessage(() => "User Not Found");
         setTimeout(() => {
@@ -86,11 +93,11 @@ const Authentiaction = ({
       if (isEmailExist) throw new Error("Email is already exists");
       else {
         // !Dont delete is related to bcrypt issue
-        // const hashedPassword = await bcrypt.hash(password, 8);
-        // password: hashedPassword,
+        const hashedPassword = await bcrypt.hash(password, 8);
+        // password: password,
         const { data }: { data: Users } = await axios.post("https://628e3408368687f3e712634b.mockapi.io/imdb-users", {
           email,
-          password: password,
+          password: hashedPassword,
           userName,
         });
 
@@ -196,6 +203,6 @@ const Authentiaction = ({
       </span>
     </section>
   );
-};
+}
 
 export default Authentiaction;

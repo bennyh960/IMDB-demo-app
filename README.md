@@ -30,5 +30,6 @@ Page 2: Drill down to a specific result (movie)
 2. Not storing auth user in browser in order to possible testing auth (use Esc button to logout)
 3. Using Outelt from react router don in order to portect hompage
 4. Added logic to registration validation and update user
+5. Passwords are completly encrtypt
 
-BUG: Encryption not working on production only on local host
+Note: Original bcrypt libary not working on browswer, in deployment so i used react-bcrypt

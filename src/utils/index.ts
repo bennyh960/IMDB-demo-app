@@ -1,34 +1,71 @@
 import React from "react";
-import { Users } from "../context/AuthProvider";
-import axios from "axios";
 
-type validateLogInArgs = {
-  setIsLoading: (u: boolean) => void;
-  setMessage: (u: string) => void;
+export async function findAsync(arr: any[], asyncCallback: any) {
+  const promises = arr.map(asyncCallback);
+  const results = await Promise.all(promises);
+  const index = results.findIndex((result) => result);
+  return arr[index];
+}
+
+export const passwordStrength = (
+  password: string,
+  password2: string,
+  passLength: number,
+  setMessage: React.Dispatch<React.SetStateAction<string>>
+) => {
+  if (document.activeElement?.id === "password") {
+    if (password.length < passLength) {
+      setMessage(() => `Minimum length of ${passLength} characters`);
+      return false;
+    } else if (!password.match(/(?=.*[a-z])/gm)) {
+      setMessage(() => "Must contain lower case letter");
+      return false;
+    } else if (!password.match(/(?=.*[A-Z])/gm)) {
+      setMessage(() => "Must contain upper case letter");
+      return false;
+    } else if (!password.match(/(?=.*\d)/gm)) {
+      setMessage(() => "Must contain number");
+      return false;
+    } else if (password === password2 && password.length >= passLength) {
+      return true;
+    } else setMessage(() => "");
+  }
+
+  const checkPassword2 = isValidConfirmPassword(password, password2, setMessage);
+  if (password.match(/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/gm) && checkPassword2 && password.length > 5) return true;
+
+  return undefined;
 };
 
-// TODO : figure out how to use async function in this situation and refactor authentication
+function isValidConfirmPassword(
+  password: string,
+  password2: string,
+  setMessage: React.Dispatch<React.SetStateAction<string>>
+): boolean {
+  if (document.activeElement?.id === "password2" && password !== password2) {
+    setMessage(() => "Not match.");
+    return false;
+  } else setMessage(() => "");
+  if (password === password2) return true;
+  else return false;
+}
 
-// setAuthUser, email, password, navigate
-// const validateLogIn = async (setIsLoading, setMessage):Promise<{setIsLoading:(u:boolean)}>  => {
-//   try {
-//     setIsLoading(() => true);
-//     const { data }: { data: Users[] } = await axios.get("https://628e3408368687f3e712634b.mockapi.io/imdb-users");
-//     const userValidation: Users | undefined = data.find((u) => u.email === email && u.password === password);
-//     if (!userValidation) {
-//       setMessage(() => "User Not Found");
-//       setTimeout(() => {
-//         setMessage(() => "");
-//       }, 1500);
-//     } else {
-//       setAuthUser({ ...userValidation, password: "*****" });
-//       navigate("/");
-//     }
-//     setIsLoading(() => false);
-//   } catch (error) {
-//     console.log(error);
-//     setIsLoading(() => false);
-//   }
-// };
+// ? required do same almost
+// export function isValidUserName(userName: string, setMessage: React.Dispatch<React.SetStateAction<string>>): boolean {
+//   if (document.activeElement?.id === "userName" && userName.length < 2) {
+//     setMessage(() => "*username must contain at least 2 characters");
+//     return false;
+//   } else setMessage(() => "");
+//   if (userName.length >= 2) return true;
+//   else return false;
+// }
 
-// export default validateLogIn;
+//? Same as type=email
+// export function isValidEmail(email: string, setMessage: React.Dispatch<React.SetStateAction<string>>): boolean {
+//   if (document.activeElement?.id === "email" && email.length > "a@b.c".length && !email.match(/^\S+@\S+\.\S+$/gm)) {
+//     setMessage(() => "Make sure email is valid email form.");
+//     return false;
+//   } else setMessage(() => "");
+//   if (email.length > "a@b.c".length && email.match(/^\S+@\S+\.\S+$/gm)) return true;
+//   else return false;
+// }

@@ -14,6 +14,20 @@
     rgba(200, 200, 2000, 0.2) 0px -3px 0px inset;
 }
 
+@media screen and (max-width: 500px) {
+  .register {
+    width: 100%;
+    font-size: 1.2rem;
+    min-height: 60vh;
+    max-height: 90vh;
+    margin-top: 20%;
+    justify-content: space-between;
+  }
+  .message {
+    margin-bottom: 15px;
+  }
+}
+
 .register_form {
   display: flex;
   flex-direction: column;
@@ -48,11 +62,14 @@
 
 .message {
   width: 100%;
+
   height: 25px;
-  padding: 5px 3px;
-  margin-bottom: 5px;
-  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+
   color: red;
+  /* border: 1px solid black; */
 }
 
 .register button:hover {
@@ -78,4 +95,22 @@
 .seperator-by-line > span:not(:nth-child(2)) {
   border-top: 1px solid rgba(70, 70, 70, 0.4);
   flex: 0.8;
+}
+
+.registration-change-type-btn {
+  margin: 0 auto;
+  cursor: pointer;
+  padding: 2px 4px;
+  min-width: 50%;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 5px;
+  color: rgba(251, 251, 251, 0.9);
+  background-color: #333333;
+  transition: all 200ms;
+}
+
+.registration-change-type-btn:hover {
+  background-color: rgba(51, 51, 51, 0.15);
+  color: #333333;
 }

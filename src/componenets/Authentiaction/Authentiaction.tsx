@@ -6,8 +6,14 @@ import Spiner from "../sppiner/Spiner";
 import AuthContext from "../../context/AuthProvider";
 import { Users } from "../../context/AuthProvider";
 import PasswordStrengthBar from "react-password-strength-bar";
-import { findAsync, passwordStrength } from "../../utils";
-import bcrypt from "bcryptjs";
+import { passwordStrength } from "../../utils";
+
+// ! ===================== Bug with bcrypt ==================================
+// TODO : Solve this bug and use this logic or find another encryption libary
+// ?The logic using bcrypt work fine but there is a bug with bcrypt and react
+// import { findAsync, passwordStrength } from "../../utils";
+// import bcrypt from "bcryptjs";
+// ! ===================== Bug with bcrypt ==================================
 
 const Authentiaction = ({
   authType,
@@ -42,11 +48,14 @@ const Authentiaction = ({
       setIsLoading(() => true);
       const { data }: { data: Users[] } = await axios.get("https://628e3408368687f3e712634b.mockapi.io/imdb-users");
 
-      const userValidation = await findAsync(data, async (u: any) => {
-        const isMatch = await bcrypt.compare(password, u.password);
-        if (isMatch) return u;
-        return undefined;
-      });
+      const userValidation = data.find((u) => u.password === password);
+      // ! Do not delete -  bcrypt bug
+      // * This logic work find but there is a bug with bcrypt and react
+      // const userValidation = await findAsync(data, async (u: any) => {
+      // const isMatch = await bcrypt.compare(password, u.password);
+      // if (isMatch) return u;
+      // return undefined;
+      // });
 
       if (!userValidation) {
         setMessage(() => "User Not Found");
@@ -76,10 +85,12 @@ const Authentiaction = ({
       const isEmailExist: Users | undefined = data.find((u) => u.email === email);
       if (isEmailExist) throw new Error("Email is already exists");
       else {
-        const hashedPassword = await bcrypt.hash(password, 8);
+        // !Dont delete is related to bcrypt issue
+        // const hashedPassword = await bcrypt.hash(password, 8);
+        // password: hashedPassword,
         const { data }: { data: Users } = await axios.post("https://628e3408368687f3e712634b.mockapi.io/imdb-users", {
           email,
-          password: hashedPassword,
+          password: password,
           userName,
         });
 

@@ -1,0 +1,65 @@
+.user_container {
+  position: fixed;
+  top: 15%;
+  width: 500px;
+  gap: 10px;
+  border: 1px solid var(--bg-weak);
+  border-radius: 5px;
+  background-color: white;
+  color: black;
+  font-weight: 900;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-x: scroll;
+  align-items: center;
+}
+
+@media screen and (max-width: 500px) {
+  .user_container {
+    margin: 0 auto;
+    width: 95vw;
+    height: 90%;
+    top: 10%;
+  }
+}
+
+.user_container > div {
+  margin: 5px 15px;
+  width: 90%;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  /* border: 1px solid green; */
+}
+
+.user_container > div > span {
+  flex: 0.4;
+}
+.user_container > div > input {
+  width: 100%;
+  flex: 1;
+  color: gray;
+}
+
+.user_container .buttons-edit,
+.buttons-confirm {
+  display: flex;
+  justify-content: space-around;
+}
+
+.user_container .icon {
+  padding: 3px;
+  width: 25%;
+}
+
+.user_container .hide_input {
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.user_container .show_input {
+  background-color: var(--bg-secondary);
+  border-color: black;
+}

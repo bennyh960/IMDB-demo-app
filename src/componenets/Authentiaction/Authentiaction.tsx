@@ -1,28 +1,33 @@
 import axios from "axios";
 import React, { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./authentication.css";
 import Spiner from "../sppiner/Spiner";
 import AuthContext from "../../context/AuthProvider";
 import { Users } from "../../context/AuthProvider";
 import PasswordStrengthBar from "react-password-strength-bar";
-// import { passwordStrength } from "../../utils";
+import { passwordStrength } from "../../utils";
+import { sendMail } from "../../utils/sendEmail";
+import useLocalStorage from "../../hooks/useLocalStorage";
+// import UseMessage from "../../hooks/UseMessage";
 
 // ! ===================== Bug with bcrypt ==================================
 // TODO : Solve this bug and use this logic or find another encryption libary
 // ?The logic using bcrypt work fine but there is a bug with bcrypt and react
-import { findAsync, passwordStrength } from "../../utils";
-import bcrypt from "bcryptjs-react";
+// import { findAsync, passwordStrength } from "../../utils";
+// import bcrypt from "bcryptjs-react";
 // ! ===================== Bug with bcrypt ==================================
 
 function Authentiaction({
   authType,
   question,
   buttonText,
+  title,
 }: {
   authType: string;
   question: string;
   buttonText: string;
+  title: string;
 }) {
   const [userName, setUserNAme] = useState("");
   const [email, setEmail] = useState("");
@@ -32,6 +37,7 @@ function Authentiaction({
   const [isLoading, setIsLoading] = useState(false);
   const [isValidRegistration, setIsValidRegistration] = useState(false);
   const { setAuthUser } = useContext(AuthContext);
+  const [storedValue, setNewValue] = useLocalStorage("user", "");
   const navigate = useNavigate();
 
   // * rgistration validation
@@ -42,28 +48,22 @@ function Authentiaction({
     }
   }, [password2, password, userName, email, authType]);
 
-  useEffect(() => {
-    const resPass = async () => {
-      const hash = await bcrypt.hash("gicvab-jobZu9-matred", 8);
-      console.log("gicvab-jobZu9-matred", hash);
-    };
-    resPass();
-  }, []);
-
   // * login validation
   const validateLogIn = async () => {
     try {
       setIsLoading(() => true);
       const { data }: { data: Users[] } = await axios.get("https://628e3408368687f3e712634b.mockapi.io/imdb-users");
 
-      // const userValidation = data.find((u) => u.password === password && u.email === email);
+      const userValidation = data.find((u) => u.password === password && u.email === email);
+      // ---------------------------------------------------------------------------------------
       // ! Do not delete -  bcrypt bug
       // * This logic work find but there is a bug with bcrypt and react
-      const userValidation = await findAsync(data, async (u: any) => {
-        const isMatch = await bcrypt.compare(password, u.password);
-        if (isMatch && u.email === email) return u;
-        return undefined;
-      });
+      // const userValidation = await findAsync(data, async (u: any) => {
+      // const isMatch = await bcrypt.compare(password, u.password);
+      // if (isMatch && u.email === email) return u;
+      // return undefined;
+      // });
+      // ---------------------------------------------------------------------------------------
       if (!userValidation) {
         setMessage(() => "User Not Found");
         setTimeout(() => {
@@ -71,6 +71,8 @@ function Authentiaction({
         }, 1500);
       } else {
         setAuthUser({ ...userValidation });
+        // @ts-ignore
+        setNewValue({ ...userValidation });
         navigate("/");
       }
       setIsLoading(() => false);
@@ -93,15 +95,19 @@ function Authentiaction({
       if (isEmailExist) throw new Error("Email is already exists");
       else {
         // !Dont delete is related to bcrypt issue
-        const hashedPassword = await bcrypt.hash(password, 8);
-        // password: password,
+        // const hashedPassword = await bcrypt.hash(password, 8);
+        // password: hashedPassword,
+
         const { data }: { data: Users } = await axios.post("https://628e3408368687f3e712634b.mockapi.io/imdb-users", {
           email,
-          password: hashedPassword,
           userName,
+          password: password,
         });
 
         setAuthUser({ ...data });
+        // @ts-ignore
+        setNewValue({ ...data });
+
         navigate("/");
       }
       setIsLoading(() => false);
@@ -114,10 +120,33 @@ function Authentiaction({
     }
   };
 
+  const handleResetPassword = async () => {
+    setIsLoading(() => true);
+    try {
+      const { data }: { data: Users[] } = await axios.get("https://628e3408368687f3e712634b.mockapi.io/imdb-users");
+      const user = data.find((user) => user.email === email);
+      if (!user) throw new Error("Email not found");
+      else {
+        sendMail(email, user.password, user.userName);
+      }
+      setMessage("We send you instructions in mail");
+      setTimeout(() => {
+        setMessage(() => "");
+        navigate("/register/login");
+      }, 1500);
+    } catch (error: any) {
+      console.log(error);
+      // UseMessage(error.message, 1500);
+      setMessage("Email Not Found");
+    }
+    setIsLoading(() => false);
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     authType === "login" && validateLogIn();
     authType === "sign" && validateNewUser();
+    authType === "reset" && handleResetPassword();
   };
 
   const handleChangeType = () => {
@@ -136,7 +165,7 @@ function Authentiaction({
     <section className="register">
       {isLoading && <Spiner />}
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <h1 style={{ textAlign: "center" }}>{authType === "login" ? "Sign in" : "Create account"}</h1>
+        <h1 style={{ textAlign: "center" }}>{title}</h1>
 
         <img
           src="https://m.media-amazon.com/images/G/01/imdb/authportal/images/www_imdb_logo._CB667618033_.png"
@@ -166,16 +195,20 @@ function Authentiaction({
           onChange={(e) => setEmail(() => e.target.value)}
           required
         />
-        <label htmlFor="password">Password</label>
-        <input
-          required
-          // type="text"
-          type="password"
-          id="password"
-          className={authType}
-          onChange={(e) => setPassword(() => e.target.value)}
-          value={password}
-        />
+        {authType !== "reset" && (
+          <>
+            <label htmlFor="password">Password</label>
+            <input
+              required
+              // type="text"
+              type="password"
+              id="password"
+              className={authType}
+              onChange={(e) => setPassword(() => e.target.value)}
+              value={password}
+            />
+          </>
+        )}
         {authType === "sign" && (
           <>
             <PasswordStrengthBar password={password} />
@@ -193,6 +226,7 @@ function Authentiaction({
         <div className="message">{message}</div>
         <button>{buttonText}</button>
       </form>
+      {authType === "login" && <Link to={"/register/reset"}>Forgot your password?</Link>}
       <div className="seperator-by-line">
         <span className="line"></span>
         <span>{question}</span>

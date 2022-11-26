@@ -7,6 +7,8 @@ import { MovieType } from "../../types";
 import Pagination from "../pagination/Pagination";
 import { ReactComponent as Glass } from "../../assets/glass.svg";
 import UseResize from "../../hooks/UseResize";
+import User from "../User/User";
+import { FaUserAlt } from "react-icons/fa";
 
 const Search: React.FC = () => {
   // states
@@ -125,9 +127,15 @@ const Search: React.FC = () => {
     // eslint-disable-next-line
   }, []);
 
+  const [openUser, setOpenUser] = useState(false);
+
   return (
     <section id="search-container" ref={scrollRef}>
       <form onSubmit={handleSubmit}>
+        <div onClick={() => setOpenUser((p) => !p)}>
+          <FaUserAlt style={{ width: "20px", height: "100%", margin: "0 15px" }} color="white" />
+        </div>
+        {openUser && <User />}
         <input type="text" placeholder="Search..." value={searchValue} onChange={handleChange} />
         {!isError && !isLoading && (
           <div className="icon glass" onClick={() => handleSubmit()}>

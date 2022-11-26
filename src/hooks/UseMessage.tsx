@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 
-const UseMessage = (
-  msg: string,
-  delay: number
-): [message: string, setMessage: React.Dispatch<React.SetStateAction<string>>] => {
+const UseMessage = (msg: string, delay: number, cb?: () => void): [setCB: () => void] => {
   const [message, setMessage] = useState("");
 
-  useEffect(() => {
+  const setCB = () => {
     setMessage(() => msg);
     setTimeout(() => {
       setMessage(() => msg);
+      if (typeof cb === "function") {
+        cb();
+      }
     }, delay);
-  });
+  };
 
-  return [message, setMessage];
+  return [setCB];
 };
 
 export default UseMessage;

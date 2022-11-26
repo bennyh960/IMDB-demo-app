@@ -7,5 +7,6 @@
 :root {
   --bg-primary: #303131;
   --bg-secondary: #444646;
+  --bg-weak: #626363;
   --transition: 0.2s ease-in;
 }

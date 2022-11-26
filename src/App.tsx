@@ -16,11 +16,31 @@ const App: React.FC = () => {
         <Route path="/movie/:id" element={<Movie />} />
         <Route
           path="/register/login"
-          element={<Authentiaction authType={"login"} question={"Not a member?"} buttonText={"Sign in"} />}
+          element={
+            <Authentiaction title={"Log in"} authType={"login"} question={"Not a member?"} buttonText={"Sign in"} />
+          }
         />
         <Route
           path="/register/sign"
-          element={<Authentiaction authType={"sign"} question={"Have account?"} buttonText={"Create new account"} />}
+          element={
+            <Authentiaction
+              title={"Create new account"}
+              authType={"sign"}
+              question={"Have account?"}
+              buttonText={"Create new account"}
+            />
+          }
+        />
+        <Route
+          path="/register/reset"
+          element={
+            <Authentiaction
+              title={"Reset password"}
+              authType={"reset"}
+              question={"Have account?"}
+              buttonText={"Reset Password"}
+            />
+          }
         />
       </Routes>
     </Router>

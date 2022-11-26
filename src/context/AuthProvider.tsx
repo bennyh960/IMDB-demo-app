@@ -13,11 +13,14 @@ interface Auth {
   setAuthUser: (user: Users) => void;
 }
 
+const user = window.localStorage.getItem("user");
+const storedUser: Users = JSON.parse(user || "") as Users;
+
 const UsersInitalState = {
-  id: null,
-  userName: null,
-  email: null,
-  password: null,
+  id: storedUser.id || null,
+  userName: storedUser.userName || null,
+  email: storedUser.email || null,
+  password: storedUser.password || null,
   token: null,
 };
 

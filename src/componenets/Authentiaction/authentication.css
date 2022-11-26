@@ -114,3 +114,13 @@
   background-color: rgba(51, 51, 51, 0.15);
   color: #333333;
 }
+
+.forgot-password-btn {
+  font-size: smaller;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.forgot-password-btn:hover {
+  color: #f0c14b;
+}
